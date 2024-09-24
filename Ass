@@ -167,6 +167,22 @@ function library:Window(name)
     Window.Size = UDim2.new(0, 407, 0, 33)
     Window.ZIndex = 1 + zindex
 
+    function functions:AddLayout(padding)
+        padding = padding or 5
+        local elements = Window:GetChildren()
+
+        -- Update positions for each element in the window
+        local currentY = 0
+        for _, element in pairs(elements) do
+            if element:IsA("GuiObject") then
+                element.Position = UDim2.new(0, 0, 0, currentY)
+                currentY = currentY + element.Size.Y.Offset + padding
+            end
+        end
+
+        Window.Size = UDim2.new(0, 407, 0, currentY)
+    end
+    
     local functions = {}
     sizes[winCount] = 33
     listOffset[winCount] = 10
@@ -270,7 +286,7 @@ function library:Window(name)
             ToggleFiller.Visible = not ToggleFiller.Visible
             callback(ToggleFiller.Visible)
         end)
-
+ 
         ToggleFiller.Name = "ToggleFiller"
         ToggleFiller.Parent = ToggleButton
         ToggleFiller.BackgroundColor3 = Color3.fromRGB(68, 189, 50)
